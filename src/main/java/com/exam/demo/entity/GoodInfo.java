@@ -18,13 +18,15 @@ public class GoodInfo {
     private String goodStatus;
     @TableField(exist = false)
     private List<String> goodPic;
+    private String goodSize;
 
-    public GoodInfo(String goodId, String goodName, String goodDes, String goodPrice, String goodOwner, String goodStatus) {
+    public GoodInfo(String goodId, String goodName, String goodDes, String goodPrice, String goodOwner, String goodStatus,String goodSize) {
         this.goodId = goodId;
         this.goodName = goodName;
         this.goodDes = goodDes;
         this.goodPrice = goodPrice;
         this.goodOwner = goodOwner;
         this.goodStatus = goodStatus;
+        this.goodSize =goodSize;
     }
 }

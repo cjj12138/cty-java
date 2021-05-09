@@ -12,4 +12,5 @@ public class OrderInfo {
     private String orderOwner;
     private String insertTime;
     private String orderStatus;
+    private String goodId;
 }

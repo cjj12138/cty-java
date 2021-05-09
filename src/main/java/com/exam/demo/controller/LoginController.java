@@ -7,10 +7,10 @@ import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.exam.demo.Service.UserService;
 import com.exam.demo.bean.R;
-import com.exam.demo.entity.GoodInfo;
-import com.exam.demo.entity.User;
-import com.exam.demo.entity.UserInfo;
+import com.exam.demo.entity.*;
 import com.exam.demo.mapper.GoodInfoMapper;
+import com.exam.demo.mapper.OrderDetailMapper;
+import com.exam.demo.mapper.OrderInfoMapper;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.ibatis.annotations.Param;
@@ -37,6 +37,10 @@ public class LoginController {
     UserService userService;
     @Autowired
     GoodInfoMapper goodInfoMapper;
+    @Autowired
+    OrderDetailMapper orderDetailMapper;
+    @Autowired
+    OrderInfoMapper orderInfoMapper;
 
     @PostMapping("/login")
     public R Test(@RequestBody JSONObject params){
@@ -69,7 +73,8 @@ public class LoginController {
         String goodDes = multipartHttpServletRequest.getParameter("goodDes");
         String goodPrice = multipartHttpServletRequest.getParameter("goodPrice");
         String userId= multipartHttpServletRequest.getParameter("userId");
-        GoodInfo goodInfo=new GoodInfo(goodId,goodName,goodDes,goodPrice,userId,"0");
+        String goodSize = multipartHttpServletRequest.getParameter("goodSize");
+        GoodInfo goodInfo=new GoodInfo(goodId,goodName,goodDes,goodPrice,userId,"0",goodSize);
         int insert = goodInfoMapper.insert(goodInfo);
         String now = String.valueOf(System.currentTimeMillis());
         multiFileMap.forEach((s, multipartFiles) -> {
@@ -114,5 +119,26 @@ public class LoginController {
             goodInfo.setGoodPic(list);
         });
         return R.success("查询成功",goodInfoList);
+    }
+
+    @RequestMapping("creatOrder")
+    public R createOrder(@RequestBody JSONObject param){
+        String goodId = param.getString("goodId");
+        String userId = param.getString("userId");
+        String orderId = UUID.randomUUID().toString();
+        OrderInfo orderInfo=new OrderInfo();
+        orderInfo.setOrderId(orderId);
+        orderInfo.setOrderOwner(userId);
+        orderInfo.setInsertTime(DateUtil.now());
+        orderInfo.setOrderStatus("1");
+        orderInfo.setGoodId(goodId);
+        orderInfoMapper.insert(orderInfo);
+        OrderDetail orderDetail=new OrderDetail();
+        orderDetail.setOrderId(orderId);
+        orderDetail.setInsertTime(DateUtil.now());
+        orderDetail.setUserId(userId);
+        orderDetailMapper.insert(orderDetail);
+        goodInfoMapper.updateStatus(goodId,"2");
+        return R.success("创建成功");
     }
 }

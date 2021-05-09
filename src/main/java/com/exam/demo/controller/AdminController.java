@@ -59,4 +59,13 @@ public class AdminController {
         List<UserInfo> userInfos = userInfoMapper.selectList(new QueryWrapper<UserInfo>().lambda());
         return R.success("查询成功",userInfos);
     }
+
+    @RequestMapping("updateGoodStatus")
+    public R updateGoodStatus(@RequestBody JSONObject param){
+        String goodId = param.getString("goodId");
+        String status=param.getString("status");
+        goodInfoMapper.updateStatus(goodId,status);
+        return R.success("更新成功");
+    }
+
 }
