@@ -9,10 +9,4 @@
     <select id="checkuser" resultType="com.exam.demo.entity.User">
       select * from user where Username=1 and Password=1
     </select>
-    <insert id="registe" parameterType="com.exam.demo.entity.User">
-        insert into user(Username,Password) value (#{username},#{pwd})
-    </insert>
-    <select id="checkusername" resultType="com.exam.demo.entity.User">
-        select * from user where Username=#{username}
-    </select>
 </mapper>
