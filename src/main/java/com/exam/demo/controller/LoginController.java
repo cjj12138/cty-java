@@ -146,7 +146,11 @@ public class LoginController {
     public R myCollection(@RequestBody JSONObject param){
         String goodId = param.getString("goodId");
         String userId = param.getString("userId");
-        goodInfoMapper.insertIntoMyLike(goodId,userId);
+        try {
+            goodInfoMapper.insertIntoMyLike(goodId,userId);
+        }catch (Exception e){
+            return R.error("重复");
+        }
         return R.success("插入成功");
     }
 
@@ -162,5 +166,13 @@ public class LoginController {
             goodInfo.setGoodPic(list);
         });
         return R.success("查询成功",goodInfoList);
+    }
+
+    @RequestMapping("deleteMyLove")
+    public R deleteMyLoveShoes(@RequestBody JSONObject param){
+        String userId = param.getString("userId");
+        String goodId = param.getString("goodId");
+        goodInfoMapper.deleteMyLove(userId,goodId);
+        return R.success("删除成功");
     }
 }

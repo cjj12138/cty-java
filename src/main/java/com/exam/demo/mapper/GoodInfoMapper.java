@@ -29,4 +29,7 @@ public interface GoodInfoMapper extends BaseMapper<GoodInfo> {
             "left join good_info t2 on t1.GOOD_ID=t2.GOOD_ID\n" +
             "where user_id=#{userId} ")
     List<GoodInfo> selectMyfvt(@Param("userId") String userId);
+
+    @Select("delete from  my_like where good_id=#{goodId} and user_id=#{userId}")
+    void deleteMyLove(@Param("userId") String userId,@Param("goodId") String goodId);
 }
