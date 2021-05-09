@@ -8,6 +8,7 @@ import com.exam.demo.entity.GoodInfo;
 import com.exam.demo.entity.User;
 import com.exam.demo.entity.UserInfo;
 import com.exam.demo.mapper.GoodInfoMapper;
+import com.exam.demo.mapper.UserInfoMapper;
 import com.exam.demo.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,9 @@ public class AdminController {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    UserInfoMapper userInfoMapper;
+
     @RequestMapping("getGoodByAdmin")
     public R getGoodByAdmin(){
         List<GoodInfo> goodInfoList = goodInfoMapper.selectList(new QueryWrapper<GoodInfo>().lambda().eq(GoodInfo::getGoodStatus, 0));
@@ -47,6 +51,12 @@ public class AdminController {
         String userId = params.getString("userId");
         User roleId = userMapper.getRoleId(userId);
         return R.success("查询成功",roleId);
+    }
 
+
+    @RequestMapping("getAllUser")
+    public R getAllUser(){
+        List<UserInfo> userInfos = userInfoMapper.selectList(new QueryWrapper<UserInfo>().lambda());
+        return R.success("查询成功",userInfos);
     }
 }
