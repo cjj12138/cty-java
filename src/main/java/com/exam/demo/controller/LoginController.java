@@ -153,6 +153,14 @@ public class LoginController {
     @RequestMapping("getMyfvt")
     public R getMyfvt(@RequestBody JSONObject param){
         String userId = param.getString("userId");
-        List<String> list=goodInfoMapper.selectMyfvt(userId);
+        List<GoodInfo> goodInfoList=goodInfoMapper.selectMyfvt(userId);
+        goodInfoList.stream().forEach(goodInfo -> {
+            String goodId=goodInfo.getGoodId();
+            String goodPath = goodInfoMapper.getGoodPath(goodId);
+            List<String> list=new ArrayList<>();
+            list.add(goodPath);
+            goodInfo.setGoodPic(list);
+        });
+        return R.success("查询成功",goodInfoList);
     }
 }

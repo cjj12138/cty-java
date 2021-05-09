@@ -24,6 +24,9 @@ public interface GoodInfoMapper extends BaseMapper<GoodInfo> {
     @Select("insert into my_like values (#{goodId},#{userId})")
     void insertIntoMyLike(@Param("goodId") String goodId,@Param("userId") String userId);
 
-    @Select("select GOOD_ID from my_like where user_id=#{userId} ")
-    List<String> selectMyfvt(@Param("userId") String userId);
+    @Select("select t2.* \n" +
+            "from my_like t1 \n" +
+            "left join good_info t2 on t1.GOOD_ID=t2.GOOD_ID\n" +
+            "where user_id=#{userId} ")
+    List<GoodInfo> selectMyfvt(@Param("userId") String userId);
 }
