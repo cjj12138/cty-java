@@ -14,4 +14,7 @@ public interface GoodInfoMapper extends BaseMapper<GoodInfo> {
 
     @Select("select good_pic from  good_pic where good_id=#{goodId} LIMIT 1")
     String getGoodPath(@Param("goodId") String goodId);
+
+    @Select("select good_pic from  good_pic where good_id=#{goodId}")
+    List<String> getGoodPathMorePic(@Param("goodId") String goodId);
 }

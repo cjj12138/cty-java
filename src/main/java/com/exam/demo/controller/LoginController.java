@@ -4,6 +4,7 @@ package com.exam.demo.controller;
 
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.exam.demo.Service.UserService;
 import com.exam.demo.bean.R;
 import com.exam.demo.entity.GoodInfo;
@@ -12,6 +13,7 @@ import com.exam.demo.entity.UserInfo;
 import com.exam.demo.mapper.GoodInfoMapper;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.ibatis.annotations.Param;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
@@ -92,6 +94,23 @@ public class LoginController {
             String goodPath = goodInfoMapper.getGoodPath(goodId);
             List<String> list=new ArrayList<>();
             list.add(goodPath);
+            goodInfo.setGoodPic(list);
+        });
+        return R.success("查询成功",goodInfoList);
+    }
+
+
+    @PostMapping("getAllGoodsMorePic")
+    public R getAllGoodsMorePic(@RequestBody JSONObject param){
+        String thisGoodId = param.getString("goodId");
+        List<GoodInfo> goodInfoList = goodInfoMapper.selectList(new QueryWrapper<GoodInfo>().lambda().eq(GoodInfo::getGoodId, thisGoodId));
+        goodInfoList.stream().forEach(goodInfo -> {
+            String goodId=goodInfo.getGoodId();
+            List<String> goodPath = goodInfoMapper.getGoodPathMorePic(goodId);
+            List<String> list=new ArrayList<>();
+            goodPath.stream().forEach(good->{
+                list.add(good);
+            });
             goodInfo.setGoodPic(list);
         });
         return R.success("查询成功",goodInfoList);
