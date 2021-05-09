@@ -20,4 +20,10 @@ public interface GoodInfoMapper extends BaseMapper<GoodInfo> {
 
     @Select("update good_info set good_status =#{status} where good_id=#{goodId}")
     void updateStatus(@Param("goodId")String goodId,@Param("status") String status);
+
+    @Select("insert into my_like values (#{goodId},#{userId})")
+    void insertIntoMyLike(@Param("goodId") String goodId,@Param("userId") String userId);
+
+    @Select("select GOOD_ID from my_like where user_id=#{userId} ")
+    List<String> selectMyfvt(@Param("userId") String userId);
 }

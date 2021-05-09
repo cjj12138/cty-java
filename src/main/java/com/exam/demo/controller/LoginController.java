@@ -141,4 +141,18 @@ public class LoginController {
         goodInfoMapper.updateStatus(goodId,"2");
         return R.success("创建成功");
     }
+
+    @RequestMapping("myCollection")
+    public R myCollection(@RequestBody JSONObject param){
+        String goodId = param.getString("goodId");
+        String userId = param.getString("userId");
+        goodInfoMapper.insertIntoMyLike(goodId,userId);
+        return R.success("插入成功");
+    }
+
+    @RequestMapping("getMyfvt")
+    public R getMyfvt(@RequestBody JSONObject param){
+        String userId = param.getString("userId");
+        List<String> list=goodInfoMapper.selectMyfvt(userId);
+    }
 }

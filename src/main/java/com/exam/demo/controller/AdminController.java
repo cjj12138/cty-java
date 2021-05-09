@@ -68,4 +68,19 @@ public class AdminController {
         return R.success("更新成功");
     }
 
+    @RequestMapping("getAppraisalShoes")
+    public R getAppraisalShoes(){
+        List<GoodInfo> goodInfoList = goodInfoMapper.selectList(new QueryWrapper<GoodInfo>().lambda().eq(GoodInfo::getGoodStatus, 2));
+        goodInfoList.stream().forEach(goodInfo -> {
+            String goodId=goodInfo.getGoodId();
+            List<String> goodPath = goodInfoMapper.getGoodPathMorePic(goodId);
+            List<String> list=new ArrayList<>();
+            goodPath.stream().forEach(good->{
+                list.add(good);
+            });
+            goodInfo.setGoodPic(list);
+        });
+        return R.success("获取成功",goodInfoList);
+    }
+
 }
