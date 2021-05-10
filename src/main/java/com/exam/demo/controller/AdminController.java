@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author A
@@ -90,6 +91,7 @@ public class AdminController {
 
     @RequestMapping("setSystemNotification")
     public R setSystemNotification(@RequestBody SystemNotification systemNotification){
+        systemNotification.setActionId(UUID.randomUUID().toString());
         int insert = systemNotificationMapper.insert(systemNotification);
         return R.success("插入成功");
     }
