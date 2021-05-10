@@ -10,6 +10,10 @@ import java.util.List;
  */
 @Data
 public class GoodInfo {
+    @TableField(exist = false)
+    private String orderOwner;
+    @TableField(exist = false)
+    private String orderId;
     private String goodId;
     private String goodName;
     private String goodDes;

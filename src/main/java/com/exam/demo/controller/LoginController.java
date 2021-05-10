@@ -4,6 +4,7 @@ package com.exam.demo.controller;
 
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.db.sql.Order;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.exam.demo.Service.UserService;
 import com.exam.demo.bean.R;
@@ -183,5 +184,19 @@ public class LoginController {
     public R getSystemNotification(){
         List<SystemNotification> systemNotifications = systemNotificationMapper.selectList(new QueryWrapper<SystemNotification>().lambda().orderByDesc(SystemNotification::getInsertTime));
         return R.success("查询成功",systemNotifications);
+    }
+    @RequestMapping("getMyOrder")
+    public R getMyOrder(@RequestBody JSONObject param){
+        String userId = param.getString("userId");
+        List<GoodInfo> list=goodInfoMapper.getMyOrder(userId);
+        return R.success("查询成功",list);
+    }
+
+    @RequestMapping("shipItem")
+    public R shipItem(@RequestBody JSONObject param){
+        String goodId = param.getString("goodId");
+        String status = param.getString("status");
+        goodInfoMapper.updateOrderId(goodId,status);
+        return R.success("更新成功");
     }
 }
