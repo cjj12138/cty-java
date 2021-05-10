@@ -11,6 +11,7 @@ import com.exam.demo.entity.*;
 import com.exam.demo.mapper.GoodInfoMapper;
 import com.exam.demo.mapper.OrderDetailMapper;
 import com.exam.demo.mapper.OrderInfoMapper;
+import com.exam.demo.mapper.SystemNotificationMapper;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.ibatis.annotations.Param;
@@ -41,6 +42,8 @@ public class LoginController {
     OrderDetailMapper orderDetailMapper;
     @Autowired
     OrderInfoMapper orderInfoMapper;
+    @Autowired
+    SystemNotificationMapper systemNotificationMapper;
 
     @PostMapping("/login")
     public R Test(@RequestBody JSONObject params){
@@ -174,5 +177,11 @@ public class LoginController {
         String goodId = param.getString("goodId");
         goodInfoMapper.deleteMyLove(userId,goodId);
         return R.success("删除成功");
+    }
+
+    @RequestMapping("getSystemNotification")
+    public R getSystemNotification(){
+        List<SystemNotification> systemNotifications = systemNotificationMapper.selectList(new QueryWrapper<SystemNotification>().lambda().orderByDesc(SystemNotification::getInsertTime));
+        return R.success("查询成功",systemNotifications);
     }
 }

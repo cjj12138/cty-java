@@ -5,9 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.exam.demo.bean.R;
 import com.exam.demo.entity.GoodInfo;
+import com.exam.demo.entity.SystemNotification;
 import com.exam.demo.entity.User;
 import com.exam.demo.entity.UserInfo;
 import com.exam.demo.mapper.GoodInfoMapper;
+import com.exam.demo.mapper.SystemNotificationMapper;
 import com.exam.demo.mapper.UserInfoMapper;
 import com.exam.demo.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class AdminController {
 
     @Autowired
     UserInfoMapper userInfoMapper;
+
+    @Autowired
+    SystemNotificationMapper systemNotificationMapper;
 
     @RequestMapping("getGoodByAdmin")
     public R getGoodByAdmin(){
@@ -81,6 +86,12 @@ public class AdminController {
             goodInfo.setGoodPic(list);
         });
         return R.success("获取成功",goodInfoList);
+    }
+
+    @RequestMapping("setSystemNotification")
+    public R setSystemNotification(@RequestBody SystemNotification systemNotification){
+        int insert = systemNotificationMapper.insert(systemNotification);
+        return R.success("插入成功");
     }
 
 }
